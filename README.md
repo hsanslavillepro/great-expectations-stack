@@ -33,6 +33,24 @@ make deps-tests
 make test-coverage
 ```
 
+For Hive Kerberos integration tests:
+
+```bash
+make deps-hive-tests
+source .env.hive.example
+make test-hive
+```
+
+The Hive connection uses a Kerberos ticket that already exists. Pass the ticket
+cache path with `KRB5CCNAME`, for example `FILE:/tmp/krb5cc_my_user`, and pass
+the Hive SQLAlchemy URL with `DATABASE_URL`:
+
+```bash
+export KRB5CCNAME='FILE:/tmp/krb5cc_my_user'
+export DATABASE_URL='hive://my_user@hive-server.example.com:10000/default?auth=KERBEROS&kerberos_service_name=hive'
+gx-freshness run --config configs/freshness.hive-kerberos.example.yml
+```
+
 Refresh the lock files after dependency changes:
 
 ```bash

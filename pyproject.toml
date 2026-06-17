@@ -21,10 +21,14 @@ dependencies = { file = ["requirements/app.dependencies.txt"] }
 
 [tool.setuptools.dynamic.optional-dependencies]
 postgres = { file = ["requirements/postgres.dependencies.txt"] }
+hive = { file = ["requirements/hive.dependencies.txt"] }
 test = { file = ["requirements/test.dependencies.txt"] }
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+markers = [
+    "hive_integration: tests that require a reachable HiveServer2 endpoint and Kerberos credentials",
+]
 
 [tool.coverage.run]
 source = ["gx_freshness"]

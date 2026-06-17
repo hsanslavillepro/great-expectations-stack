@@ -1,0 +1,1 @@
+PyHive[hive_pure_sasl,sqlalchemy,kerberos]>=0.7,<0.8

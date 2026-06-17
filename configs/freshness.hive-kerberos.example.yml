@@ -1,0 +1,11 @@
+database_url_env: DATABASE_URL
+
+schemas:
+  - name: default
+    defaults:
+      freshness_field: insert_date_time
+      freshness_hours: 24
+      record_count:
+        lookback_hours: 24
+        expected_records: 100
+        delta_percent: 10

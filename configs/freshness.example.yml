@@ -1,0 +1,22 @@
+database_url_env: DATABASE_URL
+
+schemas:
+  - name: public
+    defaults:
+      freshness_field: updated_at
+      freshness_hours: 24
+      record_count:
+        lookback_hours: 1
+        expected_records: 100
+        delta_percent: 10
+    table_overrides:
+      orders:
+        freshness_hours: 6
+      audit_log:
+        enabled: false
+
+  - name: mart
+    defaults:
+      freshness_field: loaded_at
+      freshness_hours: 25
+      where: "business_date >= CURRENT_DATE - INTERVAL '3 days'"

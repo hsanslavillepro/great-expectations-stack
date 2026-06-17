@@ -1,0 +1,35 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: gx-freshness-postgres
+    environment:
+      POSTGRES_DB: gx_freshness
+      POSTGRES_USER: gx_user
+      POSTGRES_PASSWORD: gx_password
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gx_user -d gx_freshness"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  flyway:
+    image: flyway/flyway:10-alpine
+    container_name: gx-freshness-flyway
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command:
+      - -url=jdbc:postgresql://postgres:5432/gx_freshness
+      - -user=gx_user
+      - -password=gx_password
+      - -connectRetries=60
+      - migrate
+    volumes:
+      - ./flyway/sql:/flyway/sql:ro
+
+volumes:
+  postgres_data:

@@ -1,0 +1,32 @@
+database_url_env: DATABASE_URL
+
+schemas:
+  - name: validation_core
+    defaults:
+      freshness_field: insert_date_time
+      freshness_hours: 24
+      record_count:
+        lookback_hours: 24
+        expected_records: 3
+        delta_percent: 25
+
+  - name: validation_mart
+    defaults:
+      freshness_field: insert_date_time
+      freshness_hours: 24
+      record_count:
+        lookback_hours: 24
+        expected_records: 3
+        delta_percent: 25
+    table_overrides:
+      daily_sales:
+        freshness_hours: 12
+        record_count:
+          lookback_hours: 12
+          expected_records: 2
+          delta_percent: 50
+      inventory_snapshot:
+        record_count:
+          lookback_hours: 6
+          expected_records: 3
+          delta_percent: 50

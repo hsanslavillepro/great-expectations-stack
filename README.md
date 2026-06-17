@@ -9,21 +9,28 @@ The CLI reads a YAML file containing schemas to scan plus default freshness rule
 Using `uv`:
 
 ```bash
-uv sync --extra postgres --group dev
+make deps
 ```
 
-Run commands through the locked environment:
+Run commands through the local environment:
 
 ```bash
-uv run gx-freshness --help
-uv run pytest
+.venv/bin/gx-freshness --help
+.venv/bin/pytest
 ```
 
 Or use `make`:
 
 ```bash
-make deps
+make deps-dev
 make test
+```
+
+For CI:
+
+```bash
+make deps-tests
+make test-coverage
 ```
 
 Refresh the lock files after dependency changes:
@@ -37,8 +44,8 @@ For pip-compatible environments:
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
-pip install -e ".[postgres]"
+uv pip install -r requirements/app.dependencies.txt -r requirements/postgres.dependencies.txt -r requirements/test.dependencies.txt
+uv pip install --no-deps -e .
 ```
 
 For non-Postgres databases, install the SQLAlchemy driver for your database and use the matching database URL.

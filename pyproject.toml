@@ -8,22 +8,7 @@ version = "0.1.0"
 description = "YAML-driven freshness checks using Great Expectations."
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = [
-    "great_expectations>=1.18,<2",
-    "pandas>=2.2,<3",
-    "PyYAML>=6,<7",
-    "SQLAlchemy>=2.0,<3",
-]
-
-[project.optional-dependencies]
-postgres = [
-    "psycopg[binary]>=3.2,<4",
-]
-
-[dependency-groups]
-dev = [
-    "pytest>=8,<9",
-]
+dynamic = ["dependencies", "optional-dependencies"]
 
 [project.scripts]
 gx-freshness = "gx_freshness.adapters.inbound.cli:main"
@@ -31,5 +16,19 @@ gx-freshness = "gx_freshness.adapters.inbound.cli:main"
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements/app.dependencies.txt"] }
+
+[tool.setuptools.dynamic.optional-dependencies]
+postgres = { file = ["requirements/postgres.dependencies.txt"] }
+test = { file = ["requirements/test.dependencies.txt"] }
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["gx_freshness"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
